@@ -8,6 +8,6 @@ RUN apk add --no-cache \
     which http && \
     which jq
 
-COPY entrypoint.sh /urt/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
