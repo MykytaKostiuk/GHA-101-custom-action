@@ -40,8 +40,16 @@ then
     }
 EOF
 )
-    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GH_TOKEN}"
-    echo $DATA | http POST $URL | jq .
+
+    echo "Release data: $DATA"
+    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases"
+    curl -L \
+        -v -X POST \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        "$URL" \
+        -d "$DATA" | jq .
 else
     echo "Keyword '$*' not found in commit messages."
 fi

@@ -3,9 +3,9 @@ FROM alpine:latest
 RUN apk add --no-cache \
     bash \
     jq \
-    httpie && \
+    curl && \
     which bash && \
-    which http && \
+    which curl && \
     which jq
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
