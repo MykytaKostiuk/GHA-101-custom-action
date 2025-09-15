@@ -24,6 +24,23 @@ jq . < "$EVENT_PATH"
 if jq '.commits[].message, .head_commit.message' < "$EVENT_PATH" | grep -i -q "$*";
 then
     echo "Keyword '$*' found in commit messages."
+    VERSION="1.0.$(date +%F.%s)"
+    echo "VERSION=$VERSION" >> $GITHUB_ENV
+    echo "Set VERSION to $VERSION"
+
+    DATA=$(cat << EOF
+    {
+    "tag_name": "v${VERSION}",
+    "target_commitish": "main",
+    "name": "v${VERSION}",
+    "body": "Automated release based on keyword: ${*}",
+    "draft": false,
+    "prerelease": false
+    }
+EOF
+)
+    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GITHUB_TOKEN}"
+    echo $DATA | http POST $URL | jq .
 else
     echo "Keyword '$*' not found in commit messages."
 fi

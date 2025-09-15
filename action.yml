@@ -1,0 +1,8 @@
+name: 'Keyword Release Action'
+description: 'Create a GitHub release when a commit message contains a specific keyword.'
+runs: 
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'gift'
+  color: 'blue'
