@@ -5,8 +5,9 @@ set -e
 
 # Main script logic
 echo "Starting script execution..."
+echo "GITHUB_EVENT_PATH: $GITHUB_EVENT_PATH"
 
-if [ -n "$GITHUB_EVENT_PATH"];
+if [ -n "$GITHUB_EVENT_PATH" ]
 then
     echo "GITHUB_EVENT_PATH is set to $GITHUB_EVENT_PATH"
     echo "Contents of the event file:"
@@ -21,7 +22,7 @@ env
 jq . < "$EVENT_PATH"
 
 
-if jq '.commits[].message, .head_commit.message' < "$EVENT_PATH" | grep -i -q "$*";
+if jq '.commits[].message, .head_commit.message' < "$EVENT_PATH" | grep -i -q "$*"
 then
     echo "Keyword '$*' found in commit messages."
     VERSION="1.0.$(date +%F.%s)"
@@ -39,7 +40,7 @@ then
     }
 EOF
 )
-    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GITHUB_TOKEN}"
+    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GH_TOKEN}"
     echo $DATA | http POST $URL | jq .
 else
     echo "Keyword '$*' not found in commit messages."
